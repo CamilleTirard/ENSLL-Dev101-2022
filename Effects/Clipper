@@ -1,0 +1,22 @@
+desc:clipping.
+
+slider1:gain_db=0<-150,0,0.1>threshold (dBFS)
+
+in_pin:left input 
+in_pin:right input
+out_pin:left output 
+out_pin:right output
+
+@init
+
+
+@slider
+gain_lineaire=10^(gain_db/20);
+
+@block
+
+
+@sample
+spl0 >= gain_lineaire ? spl0 = gain_lineaire : spl0 = spl0;
+spl1 >= gain_lineaire ? spl1 = gain_lineaire : spl1 = spl1;
+

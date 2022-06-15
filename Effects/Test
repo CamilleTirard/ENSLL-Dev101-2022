@@ -1,0 +1,27 @@
+
+desc:ENSLL Panner
+
+slider1:pan=0<-100,100,1>pan (%)
+
+in_pin:left input
+in_pin:right input
+out_pin:left output
+out_pin:right output
+
+@init
+last_gainL=cos($pi*(pan+100)/400);
+last_gainR=sin($pi*(pan+100)/400);
+
+@slider
+next_gainL=cos($pi*(pan+100)/400);
+next_gainR=sin($pi*(pan+100)/400);
+
+@block
+d_gainL = (next_gainL - last_gainL)/samplesblock;
+d_gainR = (next_gainR - last_gainR)/samplesblock;
+
+@sample
+spl0 *= last_gainL;
+spl1 *= last_gainR;
+last_gainL += d_gainL;
+last_gainR += d_gainR; 

@@ -1,0 +1,41 @@
+desc:Echo
+
+slider1: delai=0<48000,480000,1>samples
+slider2: amount=1<0,100,1>amount (%)
+slider3: feedback=0<0,100,1>feedback (%)
+
+in_pin:left input
+in_pin:right input
+out_pin:left output
+out_pin:right output
+
+@init
+buf=0;
+bufSize=480000;
+rec=0;
+read=rec-delai;
+fdbk=feedback/100;
+amnt=amount/100;
+
+@slider
+fdbk=feedback/100;
+amnt=amount/100;
+read=rec-delai;
+
+@block
+
+
+@sample
+rec > bufSize ? rec = 0;
+read > bufSize ? read = 0;
+
+buf[rec]=spl0+fdbk*buf[read];
+buf[rec+1]=spl1+fdbk*buf[read+1];
+
+spl0 += amnt*buf[read]; 
+spl1 += amnt*buf[read+1];
+
+rec += 2;
+read += 2;
+
+  

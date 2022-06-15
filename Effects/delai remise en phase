@@ -1,0 +1,37 @@
+desc: Delai Samples
+
+slider1: delai=0<0,600,1>samples
+
+in_pin:left input
+in_pin:right input
+out_pin:left output
+out_pin:right output
+
+@init
+buf=0;
+bufSize=600;
+rec=0;
+read=rec-delai;
+
+@slider
+read=rec-delai;
+
+@block
+
+
+@sample
+rec > bufSize ? rec = 0;
+read > bufSize ? read = 0;
+
+buf[rec]=spl0;
+buf[rec+1]=spl1;
+
+spl0 = buf[read]; 
+spl1 = buf[read+1];
+
+rec += 2;
+read += 2;
+
+
+
+

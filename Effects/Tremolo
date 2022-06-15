@@ -1,0 +1,24 @@
+desc:tremolo
+
+slider1: rate=4<0.1,20,0.1> rate (Hz)
+slider2: depth=1<0,1,0.01> depth
+slider3: stereowidth=0<0,1,0.01> stereo width
+
+in_pin:left input
+in_pin:right input
+out_pin:left output
+out_pin:right output
+
+@init
+pos=0;
+
+@slider
+periode=2*$pi*rate/srate;
+stereoWidth_rad=stereoWidth*0.01745329*90
+
+@sample
+spl0 = spl0*depth*cos(pos)+(1-depth)*spl0; 
+spl1 = spl1*depth*cos(pos+stereowidth_rad)*0.5+(1-depth)*spl1;
+
+pos+=periode;
+
